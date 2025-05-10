@@ -1,0 +1,31 @@
+name: NodeSever
+
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - node_modules:/usr/app/node_modules
+
+  db:
+    image: postgres:17
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  db-admin:
+    image: adminer:5
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  node_modules:
+  db_data:
